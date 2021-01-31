@@ -89,7 +89,7 @@ class FunctionLikeWalkerTest extends FrameWalkerTestCase
 
             $this->assertCount(1, $frame->locals()->byName('worlds'));
             $this->assertEquals('Foobar\Barfoo\World[]', (string) $frame->locals()->byName('worlds')->first()->symbolContext()->types()->best());
-            $this->assertEquals('Foobar\Barfoo\World', (string) $frame->locals()->byName('worlds')->first()->symbolContext()->types()->best()->arrayType());
+            $this->assertEquals('Foobar\Barfoo\World', (string) $frame->locals()->byName('worlds')->first()->symbolContext()->types()->best()->arrayType(), 'Iterable type');
         }];
 
         yield 'Variadic argument' => [

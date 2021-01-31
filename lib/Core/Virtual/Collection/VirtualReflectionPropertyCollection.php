@@ -3,7 +3,11 @@
 namespace Phpactor\WorseReflection\Core\Virtual\Collection;
 
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionPropertyCollection;
+use Phpactor\WorseReflection\Core\Virtual\VirtualReflectionProperty;
 
+/**
+ * @extends VirtualReflectionMemberCollection<VirtualReflectionProperty>
+ */
 class VirtualReflectionPropertyCollection extends VirtualReflectionMemberCollection implements ReflectionPropertyCollection
 {
     public static function fromReflectionProperties(array $reflectionProperties): self

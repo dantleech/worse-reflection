@@ -133,7 +133,6 @@ abstract class AbstractInstanceOfWalker extends AbstractWalker
     {
         $name = $leftOperand->getName();
 
-        /** @phpstan-ignore-next-line */
         if (null === $name) {
             return SymbolContext::none();
         }

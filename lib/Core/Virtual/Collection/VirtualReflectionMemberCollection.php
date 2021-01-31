@@ -10,9 +10,16 @@ use Phpactor\WorseReflection\Core\Reflection\ReflectionMember;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionProperty;
 
+/**
+ * @template T of ReflectionMember
+ * @implements ReflectionMemberCollection<T>
+ */
 class VirtualReflectionMemberCollection extends AbstractReflectionCollection implements ReflectionMemberCollection
 {
-    public static function fromMembers(array $members): ReflectionMemberCollection
+    /**
+     * @return static
+     */
+    public static function fromMembers(array $members)
     {
         return new static($members);
     }

@@ -1071,7 +1071,9 @@ class ReflectionClassTest extends IntegrationTestCase
         ,
             'Class1',
             function ($class): void {
-                $this->assertEquals(0, $class->properties()->count());
+                $this->assertEquals(1, $class->properties()->count());
+                $prop = $class->properties()->first();
+                $this->assertEquals('foobar', $prop->name());
             }
         ];
 
