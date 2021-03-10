@@ -3,14 +3,16 @@
 namespace Phpactor\WorseReflection\Core\Reflection;
 
 use Phpactor\WorseReflection\Core\Deprecation;
+use Phpactor\WorseReflection\Core\PhpDoc\PhpDoc;
 use Phpactor\WorseReflection\Core\Position;
 use Phpactor\WorseReflection\Core\Inference\Frame;
 use Phpactor\WorseReflection\Core\DocBlock\DocBlock;
 use Phpactor\WorseReflection\Core\Visibility;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Types;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionType;
 
-interface ReflectionMember
+interface ReflectionMember extends ReflectionNode
 {
     public const TYPE_METHOD = 'method';
     public const TYPE_PROPERTY = 'property';
@@ -37,6 +39,8 @@ interface ReflectionMember
 
     public function docblock(): DocBlock;
 
+    public function phpdoc(): PhpDoc;
+
     public function scope(): ReflectionScope;
 
     public function visibility(): Visibility;
@@ -50,6 +54,8 @@ interface ReflectionMember
     public function inferredTypes(): Types;
 
     public function type(): Type;
+
+    public function reflectionType(): ReflectionType;
 
     public function isVirtual(): bool;
 

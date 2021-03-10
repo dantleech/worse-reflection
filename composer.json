@@ -2,6 +2,12 @@
     "name": "phpactor/worse-reflection",
     "description": "Lazy AST reflector that is much worse than better",
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":"https://github.com/phpactor/docblock-parser"
+        }
+    ],
     "authors": [
         {
             "name": "Daniel Leech",
@@ -13,6 +19,7 @@
         "jetbrains/phpstorm-stubs": "*",
         "microsoft/tolerant-php-parser": "~0.0",
         "phpactor/docblock": "^0.3.4",
+        "phpactor/docblock-parser": "dev-master",
         "phpactor/text-document": "~1.2.3",
         "psr/log": "^1.0"
     },

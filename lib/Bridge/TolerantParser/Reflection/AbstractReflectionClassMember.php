@@ -2,19 +2,24 @@
 
 namespace Phpactor\WorseReflection\Bridge\TolerantParser\Reflection;
 
+use Phpactor\DocblockParser\Ast\Docblock;
+use Phpactor\DocblockParser\Ast\Tag\ReturnTag;
 use Phpactor\WorseReflection\Core\ClassName;
 use Phpactor\WorseReflection\Core\Deprecation;
+use Phpactor\WorseReflection\Core\DocBlock\DocBlock as CoreDocBlock;
+use Phpactor\WorseReflection\Core\PhpDoc\PhpDoc;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMember;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionType;
 use Phpactor\WorseReflection\Core\ServiceLocator;
 use Microsoft\PhpParser\ClassLike;
 
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Microsoft\PhpParser\NamespacedNameInterface;
 use Microsoft\PhpParser\TokenKind;
+use Phpactor\WorseReflection\Core\Type\UndefinedType;
 use Phpactor\WorseReflection\Core\Util\OriginalMethodResolver;
 use Phpactor\WorseReflection\Core\Visibility;
 use Phpactor\WorseReflection\Core\Inference\Frame;
-use Phpactor\WorseReflection\Core\DocBlock\DocBlock;
 use Microsoft\PhpParser\Node\MethodDeclaration;
 use Microsoft\PhpParser\Node\PropertyDeclaration;
 use Microsoft\PhpParser\Node\ClassConstDeclaration;
@@ -40,6 +45,11 @@ abstract class AbstractReflectionClassMember extends AbstractReflectedNode
         return $this->serviceLocator()->reflector()->reflectClassLike(ClassName::fromString($class));
     }
 
+    public function reflectionType(): ReflectionType
+    {
+        return new UndefinedType();
+    }
+
     public function original(): ReflectionMember
     {
         return (new OriginalMethodResolver())->resolveOriginalMember($this);
@@ -50,9 +60,17 @@ abstract class AbstractReflectionClassMember extends AbstractReflectedNode
         return $this->serviceLocator()->frameBuilder()->build($this->node());
     }
 
-    public function docblock(): DocBlock
+    /**
+     * @deprecated Use phpdoc() instead
+     */
+    public function docblock(): CoreDocBlock
     {
         return $this->serviceLocator()->docblockFactory()->create($this->node()->getLeadingCommentAndWhitespaceText());
+    }
+
+    public function phpdoc(): PhpDoc
+    {
+        return $this->serviceLocator()->phpdocFactory()->create($this->scope(), $this->node()->getLeadingCommentAndWhitespaceText());
     }
 
     public function visibility(): Visibility

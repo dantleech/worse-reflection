@@ -9,6 +9,7 @@ use Phpactor\WorseReflection\Core\Position;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMember;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionScope;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionType;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Types;
 use Phpactor\WorseReflection\Core\Visibility;
@@ -187,6 +188,10 @@ abstract class VirtualReflectionMember implements ReflectionMember
     public function type(): Type
     {
         return $this->type;
+    }
+
+    public function reflectionType(): ReflectionType
+    {
     }
 
     public function original(): ReflectionMember

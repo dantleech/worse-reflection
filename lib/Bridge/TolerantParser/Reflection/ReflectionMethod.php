@@ -9,8 +9,10 @@ use Microsoft\PhpParser\TokenKind;
 use Phpactor\WorseReflection\Core\ClassName;
 use Phpactor\WorseReflection\Core\Inference\FrameBuilder;
 use Phpactor\WorseReflection\Core\NodeText;
+use Phpactor\WorseReflection\Core\ReflectionType;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMember;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionMethod as CoreReflectionMethod;
+use Phpactor\WorseReflection\Core\Reflection\ReflectionType as PhpactorReflectionType;
 use Phpactor\WorseReflection\Core\ServiceLocator;
 use Phpactor\WorseReflection\Core\Type;
 use Phpactor\WorseReflection\Core\Visibility;
@@ -93,6 +95,13 @@ class ReflectionMethod extends AbstractReflectionClassMember implements CoreRefl
         }
 
         return $this->serviceLocator->reflector()->reflectClassLike(ClassName::fromString($class));
+    }
+
+    public function reflectionType(): PhpactorReflectionType
+    {
+        return $this->serviceLocator->docblockTypeResolver()->resolve(
+            $this->phpdoc()->returnType()
+        );
     }
 
     public function parameters(): CoreReflectionParameterCollection

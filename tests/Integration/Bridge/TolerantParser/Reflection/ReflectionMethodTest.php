@@ -3,6 +3,8 @@
 namespace Phpactor\WorseReflection\Tests\Integration\Bridge\TolerantParser\Reflection;
 
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionMethodCollection;
+use Phpactor\WorseReflection\Core\Type\StringType;
+use Phpactor\WorseReflection\Core\Type\TemplatedType;
 use Phpactor\WorseReflection\Core\Types;
 use Phpactor\WorseReflection\Tests\Integration\IntegrationTestCase;
 use Phpactor\WorseReflection\Core\ClassName;
@@ -16,6 +18,7 @@ use Closure;
 class ReflectionMethodTest extends IntegrationTestCase
 {
     /**
+     * @dataProvider provideReflectionMethod
      * @dataProvider provideReflectionMethod
      * @dataProvider provideDeprecations
      */
@@ -612,6 +615,36 @@ class ReflectionMethodTest extends IntegrationTestCase
             'Foobar',
             function (ReflectionMethodCollection $methods): void {
                 $this->assertTrue($methods->has('barfoo'));
+            },
+        ];
+        yield 'Generics 1' => [
+            <<<'EOT'
+                <?php
+
+                /**
+                 * @template TValue
+                 */
+                class Generic
+                {
+                    /**
+                     * @return TValue
+                     */
+                    public function value()
+                    {
+                    }
+                }
+                /**
+                 * @extends Generic<string>
+                 */
+                class Foobar extends Generic
+                {
+                }
+                EOT
+        ,
+            'Foobar',
+            function (ReflectionMethodCollection $methods): void {
+                self::assertEquals('Foobar', $methods->get('value')->class()->name()->__toString());
+                self::assertInstanceOf(TemplatedType::class, $methods->get('value')->reflectionType());
             },
         ];
     }

@@ -18,7 +18,7 @@ class DocblockFactory implements CoreDocblockPhpactory
         $this->factory = $factory ?: new PhpactorDocblockFactory();
     }
 
-    public function create(string $docblock): CoreDocblock
+    public function create(string $docblock): Docblock
     {
         return new Docblock($docblock, $this->factory->create($docblock));
     }
