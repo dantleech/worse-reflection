@@ -2,6 +2,7 @@
 
 namespace Phpactor\WorseReflection\Tests\Integration\Bridge\TolerantParser\Reflection;
 
+use Generator;
 use Phpactor\WorseReflection\Core\Visibility;
 use Phpactor\WorseReflection\Tests\Integration\IntegrationTestCase;
 use Phpactor\WorseReflection\Core\ClassName;
@@ -793,7 +794,10 @@ class ReflectionClassTest extends IntegrationTestCase
     }
 
 
-    public function provideVirtualMethods()
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideVirtualMethods(): Generator
     {
         yield 'virtual methods' => [
             <<<'EOT'
@@ -1173,6 +1177,48 @@ class ReflectionClassTest extends IntegrationTestCase
                 $this->assertEquals('Foobar', $class->properties()->first()->inferredTypes()->best()->__toString());
                 $this->assertEquals('barfoo', $class->properties()->last()->name());
                 $this->assertEquals('Barfoo', $class->properties()->last()->inferredTypes()->best()->__toString());
+            }
+        ];
+    }
+
+    /**
+     * @dataProvider provideMixins
+     */
+    public function testMixins(string $source, string $class, \Closure $assertion)
+    {
+        $class = $this->createReflector($source)->reflectClassLike(ClassName::fromString($class));
+        $assertion($class);
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideMixins(): Generator
+    {
+        yield 'mixin' => [
+            <<<'EOT'
+<?php
+
+class Class2
+{
+    public function foobar(): void
+    {
+    }
+}
+
+/**
+ * @mixin Class2
+ */
+class Class1
+{
+}
+
+EOT
+        ,
+            'Class1',
+            function (ReflectionClass $class) {
+                $this->assertEquals(1, $class->methods()->count());
+                $this->assertEquals('foobar', $class->methods()->first()->name());
             }
         ];
     }

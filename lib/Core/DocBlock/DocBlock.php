@@ -3,6 +3,7 @@
 namespace Phpactor\WorseReflection\Core\DocBlock;
 
 use Phpactor\WorseReflection\Core\Deprecation;
+use Phpactor\WorseReflection\Core\Name;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionMethodCollection;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionPropertyCollection;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
@@ -33,4 +34,9 @@ interface DocBlock
     public function inherits(): bool;
 
     public function deprecation(): Deprecation;
+
+    /**
+     * @return Name[]
+     */
+    public function mixins(): array;
 }

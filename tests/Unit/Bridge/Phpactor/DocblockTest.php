@@ -5,6 +5,7 @@ namespace Phpactor\WorseReflection\Tests\Unit\Bridge\Phpactor;
 use PHPUnit\Framework\TestCase;
 use Phpactor\WorseReflection\Bridge\Phpactor\DocblockFactory;
 use Phpactor\WorseReflection\Core\DocBlock\DocBlock;
+use Phpactor\WorseReflection\Core\Name;
 
 class DocblockTest extends TestCase
 {
@@ -66,6 +67,15 @@ class DocblockTest extends TestCase
         $this->assertFalse($docblock->inherits());
         $docblock = $this->create('/** {@inheritDoc} */');
         $this->assertTrue($docblock->inherits());
+    }
+
+    public function testMixins(): void
+    {
+        $docblock = $this->create('/** @mixin Foobar */');
+        $mixins = $docblock->mixins();
+        self::assertCount(1, $mixins);
+        $mixin = reset($mixins);
+        self::assertInstanceOf(Name::class, $mixin);
     }
 
     public function testDeprecated(): void

@@ -5,11 +5,13 @@ namespace Phpactor\WorseReflection\Bridge\Phpactor;
 use Phpactor\Docblock\DocblockType;
 use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Tag\MethodTag;
+use Phpactor\Docblock\Tag\MixinTag;
 use Phpactor\WorseReflection\Bridge\TolerantParser\Reflection\ReflectionInterface;
 use Phpactor\WorseReflection\Core\Deprecation;
 use Phpactor\WorseReflection\Core\DocBlock\DocBlock as CoreDocblock;
 use Phpactor\Docblock\Docblock as PhpactorDocblock;
 use Phpactor\WorseReflection\Core\DocBlock\DocBlockVars;
+use Phpactor\WorseReflection\Core\Name;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionMethodCollection;
 use Phpactor\WorseReflection\Core\Reflection\Collection\ReflectionPropertyCollection;
 use Phpactor\WorseReflection\Core\Reflection\ReflectionClassLike;
@@ -111,6 +113,16 @@ class Docblock implements CoreDocblock
         }
 
         return new DocBlockVars($vars);
+    }
+
+    /**
+     * @return Name[]
+     */
+    public function mixins(): array
+    {
+        return array_map(function (MixinTag $tag) {
+            return Name::fromString($tag->fqn());
+        }, iterator_to_array($this->docblock->tags()->byName('mixin')));
     }
 
     public function inherits(): bool
